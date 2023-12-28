@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CoRide",
-    "slug": "CoRide",
+    "slug": "coride",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/CoRide-logos_black.png",
@@ -11,20 +11,29 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Your message here"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/CoRide-logos_black.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fayyzzann.coride",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "web": {
       "favicon": "./assets/CoRide-logos_black.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "55085298-bca5-45d7-a748-8c7807b99cc9"
+      }
+    },
+    "owner": "fayyzzann"
   }
 }

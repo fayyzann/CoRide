@@ -2,6 +2,7 @@ import React from "react";
 import { ImageBackground, View, Text, StyleSheet } from "react-native";
 import TextButton from "../../components/UI/TextButton";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function SplashScreen3() {
   const navigation = useNavigation();
@@ -22,7 +23,9 @@ function SplashScreen3() {
           <TextButton
             text="Get Started"
             style={styles.button}
-            onPress={() => navigation.navigate("AuthenticationScreens")}
+            onPress={() => {
+              navigation.navigate("AuthenticationScreens");
+            }}
           />
         </View>
       </ImageBackground>

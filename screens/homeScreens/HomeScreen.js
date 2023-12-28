@@ -4,16 +4,14 @@ import RiderDriverMenu from "../../components/Home/RiderDriverMenu";
 import SearchBar from "../../components/Home/SearchBar";
 import IconButton from "../../components/UI/IconButton";
 import { useState } from "react";
+import MapBg from "../../components/MapBg";
 
 function HomeScreen({ navigation  }) {
   const [mode, setMode] = useState("Select a mode");
   
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require("../../assets/map-bg.png")}
-        style={styles.background}
-      >
+      <MapBg>
         <View style={styles.topBarContainer}>
           <IconButton
             icon="menu"
@@ -35,7 +33,7 @@ function HomeScreen({ navigation  }) {
             }}
           />
         </View>
-      </ImageBackground>
+        </MapBg>
     </View>
   );
 }

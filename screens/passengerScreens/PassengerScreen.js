@@ -8,6 +8,7 @@ import { useState } from "react";
 import DriverLoadingModal from "../../components/Home/DriverLoadingModal";
 import WaitingForDriver from "../../components/Home/WaitingForDriver";
 import RideReview from "../../components/Home/RideReview";
+import MapBg from "../../components/MapBg";
 
 function PassengerScreen({ navigation }) {
   //   const navigation = useNavigation();
@@ -25,10 +26,7 @@ function PassengerScreen({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require("../../assets/map-bg.png")}
-        style={styles.background}
-      >
+      <MapBg>
         <IconButton
           icon="menu"
           size={28}
@@ -71,7 +69,7 @@ function PassengerScreen({ navigation }) {
             }}
           />
         )}
-      </ImageBackground>
+      </MapBg>
     </View>
   );
 }

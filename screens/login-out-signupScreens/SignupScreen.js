@@ -7,10 +7,10 @@ import AuthContent from "../../components/Authentication/AuthContent";
 function SignupScreen({ navigation }) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  async function signupHandler({ email, password }) {
+  async function signupHandler({ email, password,name }) {
     setIsAuthenticating(true);
     try {
-      const token = await createUser(email, password);
+      const token = await createUser(email, password , name);
       setIsAuthenticating(false);
       navigation.replace("LoginScreen");
     } catch (error) {

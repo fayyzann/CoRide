@@ -4,14 +4,15 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import TextIconButton from "../UI/TextIconButton";
 import { createUser } from "../../util/auth";
 
-function SignUp({onAuthenticate }) {
-  const [name, setName] = useState("");
+function SignUp({ onAuthenticate }) {
+  const [enteredName, setName] = useState("");
   const [enteredEmail, setEmail] = useState("");
   const [enteredPassword, setPassword] = useState("");
   const [enteredConfirmPassword, setConfirmPassword] = useState("");
 
   async function handleSignup() {
-    let { email, password, confirmPassword } = {
+    let { name, email, password, confirmPassword } = {
+      name: enteredName,
       email: enteredEmail,
       password: enteredPassword,
       confirmPassword: enteredConfirmPassword,
@@ -19,17 +20,23 @@ function SignUp({onAuthenticate }) {
     email = email.trim();
     password = password.trim();
 
+    const nameIsValid = name.length > 0;
     const emailIsValid = email.includes("@");
     const passwordIsValid = password.length > 6;
     const passwordsAreEqual = password === confirmPassword;
 
-    if (!emailIsValid || !passwordIsValid || !passwordsAreEqual) {
+    if (
+      !emailIsValid ||
+      !passwordIsValid ||
+      !passwordsAreEqual ||
+      !nameIsValid
+    ) {
       Alert.alert("Invalid credentials", "Please enter valid credentials", [
         { text: "Okay" },
       ]);
       return;
     }
-    onAuthenticate({email,password});
+    onAuthenticate({ email, password, name });
   }
 
   return (
@@ -43,7 +50,7 @@ function SignUp({onAuthenticate }) {
             <TextInput
               style={styles.input}
               onChangeText={(text) => setName(text)}
-              value={name}
+              value={enteredName}
               placeholder="Full Name"
             />
           </View>

@@ -1,20 +1,34 @@
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Image, Text } from "react-native";
+import User from "./assets/images/user.png";
 import SplashScreen1 from "./screens/splashScreens/SplashScreen1";
 import SplashScreen2 from "./screens/splashScreens/SplashScreen2";
 import SplashScreen3 from "./screens/splashScreens/SplashScreen3";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import LoginScreen from "./screens/login-out-signupScreens/LoginScreen";
 import SignupScreen from "./screens/login-out-signupScreens/SignupScreen";
 import ForgotPassScreen from "./screens/login-out-signupScreens/ForgotPassScreen";
 import HomeScreen from "./screens/homeScreens/HomeScreen";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import { useSelector } from "react-redux";
 import SearchScreen from "./screens/homeScreens/SearchScreen";
 import PassengerScreen from "./screens/passengerScreens/PassengerScreen";
 import DriverScreen from "./screens/driverScreens/DriverScreen";
+import ProfileScreen from "./screens/profileScreens/ProfileScreen";
+import EditProfileScreen from "./screens/profileScreens/EditProfileScreen";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { authActions } from "./store/auth-slice";
+import UserProfile from "./components/UserProfile";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -91,13 +105,22 @@ function HomeScreens() {
 }
 
 function AuthenticationStack() {
+  const firstTime = AsyncStorage.getItem("firstTime");
+  const ifFirstTime = firstTime === "true";
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {!ifFirstTime  && (
+        <Stack.Screen
+          name="SplashScreens"
+          component={SplashScreens}
+          options={{ headerShown: false }}
+        />
+      )}
+      {/* <Stack.Screen
         name="SplashScreens"
         component={SplashScreens}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="AuthenticationScreens"
         component={AuthenticationScreens}
@@ -106,14 +129,66 @@ function AuthenticationStack() {
     </Stack.Navigator>
   );
 }
+function ProfileScreens() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditProfileScreen"
+        component={EditProfileScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function AuthenticatedStack() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      drawerContent={(props) => {
+        return (
+          <SafeAreaView>
+            <UserProfile />
+            <DrawerItemList {...props} />
+          </SafeAreaView>
+        );
+      }}
+      screenOptions={{
+        drawerStyle: {
+          backgroundColor: "#fff",
+          width: "65%",
+        },
+      }}
+    >
       <Drawer.Screen
         name="HomeScreens"
         component={HomeScreens}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          drawerItemStyle: {
+            display: "none",
+          },
+        }}
+      />
+      <Drawer.Screen
+        name="ProfileScreens"
+        component={ProfileScreens}
+        options={{
+          headerShown: false,
+          drawerLabel: "View Profile",
+          drawerLabelStyle: {
+            fontSize: 16,
+            fontWeight: "bold",
+            color: "#454545",
+          },
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons name="person" size={size} color="#454545" />
+          ),
+        }}
       />
     </Drawer.Navigator>
   );
@@ -141,6 +216,16 @@ function Navigation() {
 }
 
 function Root() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem("Token");
+      if (token) {
+        dispatch(authActions.login(token));
+      }
+    };
+    checkToken();
+  }, []);
   return (
     <NavigationContainer>
       <Navigation />

@@ -5,6 +5,7 @@ import RideRemainingTime from "../../components/Home/RideRemainingTime";
 import DriverRequestModal from "../../components/Home/DriverRideRequest";
 import RideReview from "../../components/Home/RideReview";
 import IconButton from "../../components/UI/IconButton";
+import MapBg from "../../components/MapBg";
 
 function DriverScreen({ navigation }) {
   const [isRideScheduled, setIsRideScheduled] = useState(false);
@@ -20,7 +21,7 @@ function DriverScreen({ navigation }) {
   useEffect(() => {
     setTimeout(() => {
       setIsRideRequested(true);
-    }, 15000);
+    }, 25000);
   }, []);
   function onRideSchedule({ carMake, carReg, seatCapacity, time }) {
     console.log(carMake, carReg, seatCapacity, time);
@@ -43,10 +44,7 @@ function DriverScreen({ navigation }) {
           />
         )}
       {isRideScheduled && (
-        <ImageBackground
-          source={require("../../assets/map-bg.png")}
-          style={styles.background}
-        >
+        <MapBg>
           <IconButton
             icon="menu"
             size={28}
@@ -84,7 +82,7 @@ function DriverScreen({ navigation }) {
               }}
             />
           )}
-        </ImageBackground>
+        </MapBg>
       )}
     </View>
   );
